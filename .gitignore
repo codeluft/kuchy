@@ -3,3 +3,4 @@ static/htmx.min.js
 tmp/
 .idea/
 build/
+vendor/
