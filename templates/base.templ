@@ -1,0 +1,29 @@
+package templates
+
+import (
+    "github.com/codeluft/kuchy-frontend/templates/components"
+)
+
+templ Base(title string) {
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>{ title }</title>
+
+            <script type="text/javascript" src="/static/js/htmx.min.js" defer></script>
+            <script type="text/javascript" src="/static/js/bootstrap.min.js" defer></script>
+
+            <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+        </head>
+        <body>
+            <main class="main container-fluid">
+                <header class="row"><h1 class="logo col">Kuchy</h1></header>
+                <nav class="navbar navbar-vertical navbar-expand-lg">@components.Navigation()</nav>
+                <section id="contents">{ children... }</section>
+            </main>
+        </body>
+    </html>
+}

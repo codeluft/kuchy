@@ -1,0 +1,29 @@
+package components
+
+var links = []struct{
+    label string
+    url string
+    pageUrl string
+}{
+    {"Home", "/", "/pages/home"},
+    {"Stock", "/stock", "/pages/stock"},
+    {"Recipes", "/recipes", "/pages/recipes"},
+    {"Sellings", "/sellings", "/pages/sellings"},
+    {"Purchases", "/purchases", "/pages/purchases"},
+    {"Settings", "/settings", "/pages/settings"},
+}
+
+templ Navigation() {
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav flex-column">
+        for _, link := range links {
+            <li>
+                <a href={templ.SafeURL(link.url)}
+                    hx-get={link.pageUrl}
+                    hx-target="#contents"
+                    hx-trigger="click">{link.label}</a>
+            </li>
+        }
+        </ul>
+    </div>
+}

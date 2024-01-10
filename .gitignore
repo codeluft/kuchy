@@ -1,0 +1,5 @@
+*_templ.go
+static/htmx.min.js
+tmp/
+.idea/
+build/
