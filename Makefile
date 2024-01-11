@@ -1,8 +1,17 @@
+include .env
+export $(shell sed 's/=.*//' .env)
+
 prepare: tools assets templ deps
+
+database-dev-up: postgresql-local-up migrate-up models
+
+database-dev-down: postgresql-local-down
 
 tools:
 	go install github.com/a-h/templ/cmd/templ@latest
 	go install github.com/cosmtrek/air@latest
+	go install github.com/pressly/goose/v3/cmd/goose@latest
+	go install github.com/lqs/sqlingo/sqlingo-gen-postgres@latest
 
 assets:
 	wget https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js \
@@ -18,6 +27,22 @@ templ:
 deps:
 	go mod tidy
 
+postgresql-local-up:
+	docker-compose --env-file .env up -d db
+	@sleep 2
+
+postgresql-local-down:
+	docker-compose --env-file .env down
+
+migrate-up:
+	goose -dir migrations postgres "host=${DATABASE_HOST} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" up
+
+migrate-down:
+	goose -dir migrations postgres "host=${DATABASE_HOST} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" down
+
+models:
+	sqlingo-gen-postgres "host=${DATABASE_HOST} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" > pkg/domain/model/model.go
+
 run:
 	air
 
@@ -25,7 +50,7 @@ build: prepare
 	go build -o ./build/bootstrap .
 
 image:
-	DOCKER_BUILDKIT=1 docker build -f docker/app/Dockerfile -t kuchy-frontend .
+	DOCKER_BUILDKIT=1 docker build -f docker/app/Dockerfile -t kuchy .
 
 run-image: image
-	docker run -p 0.0.0.0:3000:3000/tcp kuchy-frontend
+	docker run -p 0.0.0.0:3000:3000/tcp kuchy
