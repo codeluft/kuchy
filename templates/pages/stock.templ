@@ -1,5 +1,17 @@
 package pages
 
-templ Stock() {
+import (
+    T "github.com/codeluft/kuchy/templates"
+)
+
+// StockContents is the contents of the stock page
+templ StockContents() {
     <h1>Stock</h1>
+}
+
+// Stock is the stock page
+templ Stock() {
+    @T.Base() {
+        @StockContents()
+    }
 }

@@ -1,6 +1,6 @@
-module github.com/codeluft/kuchy-frontend
+module github.com/codeluft/kuchy
 
-go 1.21.5
+go 1.21
 
 require (
 	github.com/a-h/templ v0.2.513

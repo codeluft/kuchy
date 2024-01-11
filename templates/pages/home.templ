@@ -1,5 +1,17 @@
 package pages
 
-templ Home() {
+import (
+    T "github.com/codeluft/kuchy/templates"
+)
+
+// HomeContents is the contents of the home page
+templ HomeContents() {
     <h1>Home</h1>
+}
+
+// Home is the home page
+templ Home() {
+    @T.Base() {
+        @HomeContents()
+    }
 }

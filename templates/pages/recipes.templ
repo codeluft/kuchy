@@ -1,0 +1,15 @@
+package pages
+
+import (
+    T "github.com/codeluft/kuchy/templates"
+)
+
+templ RecipesContents() {
+    <h1>Recipes</h1>
+}
+
+templ Recipes() {
+    @T.Base() {
+        @RecipesContents()
+    }
+}

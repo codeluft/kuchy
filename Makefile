@@ -1,4 +1,4 @@
-prepare: tools assets templ
+prepare: tools assets templ deps
 
 tools:
 	go install github.com/a-h/templ/cmd/templ@latest
@@ -14,12 +14,14 @@ assets:
 
 templ:
 	templ generate
+
+deps:
 	go mod tidy
 
 run:
 	air
 
-build: setup templates
+build: prepare
 	go build -o ./build/bootstrap .
 
 image:
