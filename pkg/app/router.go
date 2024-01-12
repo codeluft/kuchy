@@ -11,8 +11,8 @@ import (
 	"net/http"
 )
 
-func registerHandlers(r *httprouter.Router, ctx context.Context) {
-	var h = handler.New(ctx)
+func registerHandlers(r *httprouter.Router, ctx context.Context, l *log.Logger) {
+	var h = handler.New(ctx, l)
 
 	r.GET("/", h.Home)
 	r.GET("/pages/home", h.HomeContents)
@@ -31,14 +31,15 @@ type loggerRouter struct {
 
 // NewRouter returns a new http.Handler that serves the application.
 func NewRouter(assets embed.FS, ctx context.Context) http.Handler {
-	var router = &httprouter.Router{}
+	var router = httprouter.New()
+	var defaultLog = log.Default()
 
 	staticFS, err := fs.Sub(assets, "static")
 	if err != nil {
 		log.Fatal(err)
 	}
 	router.ServeFiles("/static/*filepath", http.FS(staticFS))
-	registerHandlers(router, ctx)
+	registerHandlers(router, ctx, defaultLog)
 
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -49,7 +50,7 @@ func NewRouter(assets embed.FS, ctx context.Context) http.Handler {
 	})
 
 	return &loggerRouter{
-		log:    log.Default(),
+		log:    defaultLog,
 		router: router,
 	}
 }

@@ -5,7 +5,20 @@ import (
 )
 
 templ RecipesContents() {
-    <h1>Recipes</h1>
+    <div>
+        <h1>Recipes</h1>
+        <form method="POST" action="/recipes" hx-post="/recipes" hx-target="#result">
+            <input type="text" name="name" placeholder="Name" />
+            <input type="number" name="sellingPrice" placeholder="Selling Price" />
+            <input type="text" name="ingredients.name" />
+            <input type="text" name="ingredients.qty" />
+            <input type="text" name="ingredients.name" />
+            <input type="text" name="ingredients.qty" />
+
+            <input type="submit" value="Add" />
+        </form>
+        <textarea cols="80" rows="30" id="result"></textarea>
+    </div>
 }
 
 templ Recipes() {

@@ -21,9 +21,11 @@ templ Base() {
         </head>
         <body>
             <main class="main container-fluid">
-                <header class="row"><h1 class="logo col">Kuchy</h1></header>
-                <nav class="navbar navbar-vertical navbar-expand-lg">@components.Navigation()</nav>
-                <section id="contents">{ children... }</section>
+                <header class="row bg-header">
+                    <h1 class="logo col-2">Kuchy</h1>
+                    <div class="col">@components.Navigation()</div>
+                </header>
+                <div class="col-11"><section id="contents">{ children... }</section></div>
             </main>
         </body>
     </html>

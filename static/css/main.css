@@ -1,29 +1,12 @@
-/*
 body {
     margin: 0px;
     padding: 0px;
-    background-color: white;
-    color: black;
-    font-family: sans-serif;
 }
-
-.page {
-    position: relative;
-}
-
-.page header {
-    width: 100%;
-    height: 5rem;
-    background-color: #306090;
+header.bg-header {
     color: white;
-    display: flex;
+    padding: 10px;
+    background: rgb(80,57,156);
+    background: linear-gradient(160deg, rgba(80,57,156,1) 30%, rgba(149,54,123,1) 100%);
+    border-bottom: solid 2px #203070;
+    box-shadow: #6f42c1 0px 0px 10px 0px;
 }
-
-.page header h1 {
-    margin: 20px;
-}
-
-.page .contents {
-    display: flex;
-}
-*/
