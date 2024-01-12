@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"github.com/codeluft/kuchy/translations"
 	"log"
 	"net/http"
 )
@@ -10,11 +11,12 @@ import (
 type handler struct {
 	ctx context.Context
 	log *log.Logger
+	t   translations.TranslatorFunc
 }
 
 // New returns a new handler.
-func New(ctx context.Context, l *log.Logger) *handler {
-	return &handler{ctx: ctx, log: l}
+func New(ctx context.Context, l *log.Logger, t translations.TranslatorFunc) *handler {
+	return &handler{ctx: ctx, log: l, t: t}
 }
 
 // JSONEncode encodes the given value as JSON and writes it to the response.

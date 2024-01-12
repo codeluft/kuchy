@@ -1,17 +1,17 @@
 package pages
 
 import (
-    T "github.com/codeluft/kuchy/templates"
+    . "github.com/codeluft/kuchy/templates"
 )
 
 // StockContents is the contents of the stock page
 templ StockContents() {
-    <h1>Stock</h1>
+    <h2>Stock</h2>
 }
 
 // Stock is the stock page
 templ Stock() {
-    @T.Base() {
+    @Base() {
         @StockContents()
     }
 }

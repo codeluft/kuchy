@@ -1,17 +1,18 @@
 package pages
 
 import (
-    T "github.com/codeluft/kuchy/templates"
+    . "github.com/codeluft/kuchy/templates"
+    "github.com/codeluft/kuchy/translations"
 )
 
-// HomeContents is the contents of the home page
-templ HomeContents() {
-    <h1>Home</h1>
+// HomeContents is the home page contents
+templ HomeContents(t translations.TranslatorFunc) {
+    <h2>{ t("ui.home.page.title", "Homes") }</h2>
 }
 
 // Home is the home page
-templ Home() {
-    @T.Base() {
-        @HomeContents()
+templ Home(t translations.TranslatorFunc) {
+    @Base() {
+        @HomeContents(t)
     }
 }

@@ -1,12 +1,12 @@
 package pages
 
 import (
-    T "github.com/codeluft/kuchy/templates"
+    . "github.com/codeluft/kuchy/templates"
 )
 
 templ RecipesContents() {
     <div>
-        <h1>Recipes</h1>
+        <h2>Recipes</h2>
         <form method="POST" action="/recipes" hx-post="/recipes" hx-target="#result">
             <input type="text" name="name" placeholder="Name" />
             <input type="number" name="sellingPrice" placeholder="Selling Price" />
@@ -22,7 +22,7 @@ templ RecipesContents() {
 }
 
 templ Recipes() {
-    @T.Base() {
+    @Base() {
         @RecipesContents()
     }
 }

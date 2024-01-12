@@ -20,12 +20,12 @@ templ Base() {
             <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
         </head>
         <body>
-            <main class="main container-fluid">
+            <main>
                 <header class="row bg-header">
                     <h1 class="logo col-2">Kuchy</h1>
                     <div class="col">@components.Navigation()</div>
                 </header>
-                <div class="col-11"><section id="contents">{ children... }</section></div>
+                <section id="contents">{ children... }</section>
             </main>
         </body>
     </html>
