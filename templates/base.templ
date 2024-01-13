@@ -2,10 +2,11 @@ package templates
 
 import (
     "github.com/codeluft/kuchy/templates/components"
+    "github.com/codeluft/kuchy/translations"
 )
 
 // Base is the base template for all pages
-templ Base() {
+templ Base(t translations.TranslatorFunc) {
     <!DOCTYPE html>
     <html>
         <head>
@@ -20,9 +21,22 @@ templ Base() {
             <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
         </head>
         <body>
-            <main class="main container-fluid">
-                <header class="row"><h1 class="logo col">Kuchy</h1></header>
-                <nav class="navbar navbar-vertical navbar-expand-lg">@components.Navigation()</nav>
+            <main>
+                <header class="row bg-header">
+                    <h1 class="logo col-2">Kuchy</h1>
+                    <div class="col" id="navigation">@components.Navigation(t)</div>
+                    <div class="col-1 text-right">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{ t("ui.language.label", "Language") }</a>
+                        <nav class="navbar navbar-expand-lg nav nav-pill">
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" role="button" href="/lang/en">{ t("ui.language.en", "English") }</a>
+                                    <a class="nav-link" role="button" href="/lang/pt_br">{ t("ui.language.pt_br", "Portuguese (Brazilian)") }</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
                 <section id="contents">{ children... }</section>
             </main>
         </body>
