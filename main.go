@@ -23,11 +23,13 @@ const (
 func main() {
 	var ctx = context.TODO()
 	var t, err = translations.NewTranslator(transFS)
+	var session = app.NewSession()
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var router = app.NewRouter(assets, ctx, t)
+	var router = app.NewRouter(assets, ctx, t, session)
 	var addr = fmt.Sprintf(":%d", ServerPort)
 
 	log.Printf("Running http server at %s", addr)

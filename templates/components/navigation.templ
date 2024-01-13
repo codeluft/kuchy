@@ -1,28 +1,34 @@
 package components
 
+import (
+    "github.com/codeluft/kuchy/translations"
+)
+
 type navbarLink struct {
-    label string
+    translationKey string
+    fallback string
     url string
     pageUrl string
     sublinks []navbarLink
 }
 
 var links = []navbarLink{
-    {"Home", "/", "/pages/home", nil},
-    {"Stock", "/stock", "/pages/stock", []navbarLink{
-        {"Products", "/products", "/pages/products", nil},
+    {"ui.home.navbar.label", "Home", "/", "/pages/home", nil},
+    {"ui.stock.navbar.label", "Stock", "/stock", "/pages/stock", []navbarLink{
+        {"ui.product.navbar.label", "Products", "/products", "/pages/products", nil},
+        {"ui.stock_management.navbar.label", "Stock Management", "/stock", "/pages/stock", nil},
     }},
-    {"Recipes", "/recipes", "/pages/recipes", nil},
+    {"ui.recipe.navbar.label", "Recipes", "/recipes", "/pages/recipes", nil},
 }
 
 // Navigation renders the navigation bar
-templ Navigation() {
+templ Navigation(t translations.TranslatorFunc) {
     <nav class="navbar navbar-expand-lg">
         <ul class="nav nav-pills">
         for _, link := range links {
             if len(link.sublinks) > 0 {
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{link.label}</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{ t(link.translationKey, link.fallback) }</a>
                 <ul class="dropdown-menu">
                 for _, sublink := range link.sublinks {
                     <li class="nav-item">
@@ -31,7 +37,7 @@ templ Navigation() {
                             href={templ.SafeURL(sublink.url)}
                             hx-get={sublink.pageUrl}
                             hx-target="#contents"
-                            hx-trigger="click">{sublink.label}</a>
+                            hx-trigger="click">{ t(sublink.translationKey, sublink.fallback) }</a>
                     </li>
                 }
                 </ul>
@@ -43,7 +49,7 @@ templ Navigation() {
                     href={templ.SafeURL(link.url)}
                     hx-get={link.pageUrl}
                     hx-target="#contents"
-                    hx-trigger="click">{link.label}</a>
+                    hx-trigger="click">{ t(link.translationKey, link.fallback) }</a>
             </li>
             }
         }

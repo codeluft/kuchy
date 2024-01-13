@@ -7,12 +7,12 @@ import (
 
 // HomeContents is the home page contents
 templ HomeContents(t translations.TranslatorFunc) {
-    <h2>{ t("ui.home.page.title", "Homes") }</h2>
+    <h2>{ t("ui.home.page.title", "Home") }</h2>
 }
 
 // Home is the home page
 templ Home(t translations.TranslatorFunc) {
-    @Base() {
+    @Base(t) {
         @HomeContents(t)
     }
 }

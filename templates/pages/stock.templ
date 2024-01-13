@@ -2,16 +2,17 @@ package pages
 
 import (
     . "github.com/codeluft/kuchy/templates"
+    "github.com/codeluft/kuchy/translations"
 )
 
 // StockContents is the contents of the stock page
-templ StockContents() {
-    <h2>Stock</h2>
+templ StockContents(t translations.TranslatorFunc) {
+    <h2>{ t("ui.stock_management.page.title", "Stock") }</h2>
 }
 
 // Stock is the stock page
-templ Stock() {
-    @Base() {
-        @StockContents()
+templ Stock(t translations.TranslatorFunc) {
+    @Base(t) {
+        @StockContents(t)
     }
 }
