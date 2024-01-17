@@ -52,6 +52,6 @@ func main() {
 		WriteTimeout: 2 * time.Second,
 	}
 
-	log.Printf("Running http server at %s", addr)
+	log.Printf("Running http server at http://%s", addr)
 	log.Fatal(server.ListenAndServe())
 }
