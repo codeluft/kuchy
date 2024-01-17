@@ -11,21 +11,18 @@ templ Base(t view.TranslatorFunc) {
     <html>
         <head>
             <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Kuchy</title>
 
             <script type="text/javascript" src="/static/js/htmx.min.js" defer></script>
-            <script type="text/javascript" src="/static/js/bootstrap.min.js" defer></script>
-
-            <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-            <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+            <script type="text/javascript" src="/static/js/json-enc.js" defer></script>
+            <link rel="stylesheet" type="text/css" href="/static/css/app.min.css" />
         </head>
         <body>
-            <main>
-                <header class="row bg-header">
-                    <h1 class="logo col-2">Kuchy</h1>
-                    <div class="col" id="navigation">@component.Navigation(t)</div>
-                    <div class="col-1 text-right">
+            <main class="container">
+                <header class="flex flex-row items-stretch p-4 border-b">
+                    <h1 class="logo basis-1/2">Kuchy</h1>
+                    <div class="basis-1/2 right">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{ t("ui.language.label", "Language") }</a>
                         <nav class="navbar navbar-expand-lg nav nav-pill">
                             <ul class="dropdown-menu">
@@ -37,7 +34,13 @@ templ Base(t view.TranslatorFunc) {
                         </nav>
                     </div>
                 </header>
-                <section id="contents">{ children... }</section>
+                <div class="flex flex-row">
+                    <div class="basis-1/6 border-r p-4 flex-col">@component.Navigation(t)</div>
+                    <section class="basis-5/6 p-4" id="contents">{ children... }</section>
+                </div>
+                <footer class="flex flex-row items-stretch p-4 border-t center">
+                    Kuchy by Codeluft - 2024 All rights reserved
+                </footer>
             </main>
         </body>
     </html>

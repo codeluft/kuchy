@@ -1,9 +1,12 @@
 include .env
 export $(shell sed 's/=.*//' .env)
 
-GOLANGCI_LINT_VERSION="v1.55.2"
+GOLANGCI_LINT_URL=https://raw.githubusercontent.com/golangci/golangci-lint
+GOLANGCI_LINT_VERSION=v1.55.2
+HTMX_URL=https://unpkg.com/htmx.org
+HTMX_VERSION=1.9.10
 
-prepare: tools assets templ deps
+prepare: tools build-frontend templ deps
 
 database-dev-up: postgresql-local-up migrate-up models
 
@@ -14,21 +17,19 @@ tools:
 	go install github.com/cosmtrek/air@latest
 	go install github.com/pressly/goose/v3/cmd/goose@latest
 	go install github.com/lqs/sqlingo/sqlingo-gen-postgres@latest
-	wget -O /dev/stdout \
-		https://raw.githubusercontent.com/golangci/golangci-lint/${GOLANGCI_LINT_VERSION}/install.sh | \
-		sh -s ${GOLANGCI_LINT_VERSION}
+	wget -O /dev/stdout ${GOLANGCI_LINT_URL}/${GOLANGCI_LINT_VERSION}/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
+	npm install -D tailwindcss@latest
+	npm install flowbite
 
-assets:
-	wget https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js \
-		-O ./static/js/htmx.min.js -o /dev/null
-	wget https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css \
-		-O ./static/css/bootstrap.min.css -o /dev/null
-	wget https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js \
-		-O ./static/js/bootstrap.min.js -o /dev/null
+build-frontend:
+	mkdir -p ./static/css ./static/js
+	npx tailwindcss -i ./assets/css/app.css -o ./static/css/app.min.css --minify
+	wget ${HTMX_URL}@${HTMX_VERSION}/dist/htmx.min.js -O ./static/js/htmx.min.js -o /dev/null
+	wget ${HTMX_URL}@${HTMX_VERSION}/dist/ext/json-enc.js -O ./static/js/json-enc.js -o /dev/null
 
 check:
-	golangci-lint run || true
-	go test -v -race ./... || true
+	golangci-lint run
+	go test -v -race ./...
 
 templ:
 	templ generate

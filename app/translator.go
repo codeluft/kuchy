@@ -17,7 +17,7 @@ const (
 	DefaultLanguage = "en"
 )
 
-type translator struct {
+type Translator struct {
 	dict map[string]map[string]string
 	lang string
 }
@@ -26,8 +26,8 @@ type translator struct {
 type TranslatorFunc func(string, string) string
 
 // NewTranslator returns a new Translator.
-func NewTranslator(dir embed.FS) (*translator, error) {
-	var t = &translator{
+func NewTranslator(dir embed.FS) (*Translator, error) {
+	var t = &Translator{
 		dict: make(map[string]map[string]string),
 		lang: DefaultLanguage,
 	}
@@ -59,7 +59,7 @@ func NewTranslator(dir embed.FS) (*translator, error) {
 }
 
 // Translate translates a key to the current language.
-func (t *translator) Translate(key, placeholder string) string {
+func (t *Translator) Translate(key, placeholder string) string {
 	if _, ok := t.dict[t.lang]; !ok {
 		return placeholder
 	}
@@ -72,7 +72,7 @@ func (t *translator) Translate(key, placeholder string) string {
 }
 
 // SetLanguage sets the current language.
-func (t *translator) SetLanguage(lang string) error {
+func (t *Translator) SetLanguage(lang string) error {
 	if _, ok := t.dict[lang]; !ok {
 		return ErrLanguageNotFound
 	}
@@ -82,11 +82,11 @@ func (t *translator) SetLanguage(lang string) error {
 }
 
 // GetLanguage returns the current language.
-func (t *translator) GetLanguage() string {
+func (t *Translator) GetLanguage() string {
 	return t.lang
 }
 
 // GetDict returns the current dictionary.
-func (t *translator) GetDict() map[string]string {
+func (t *Translator) GetDict() map[string]string {
 	return t.dict[t.lang]
 }

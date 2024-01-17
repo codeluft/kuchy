@@ -5,4 +5,7 @@ tmp/
 build/
 vendor/
 bin/
+static/css/
+static/js/
+node_modules/
 .env

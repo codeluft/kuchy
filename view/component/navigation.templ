@@ -28,7 +28,7 @@ templ Navigation(t view.TranslatorFunc) {
         for _, link := range links {
             if len(link.sublinks) > 0 {
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{ t(link.translationKey, link.fallback) }</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">{ t(link.translationKey, link.fallback) }</a>
                 <ul class="dropdown-menu">
                 for _, sublink := range link.sublinks {
                     <li class="nav-item">
