@@ -1,0 +1,18 @@
+package page
+
+import (
+    "github.com/codeluft/kuchy/view/layout"
+    "github.com/codeluft/kuchy/view"
+)
+
+// StockContents is the contents of the stock page.
+templ StockContents(t view.TranslatorFunc) {
+    <h2>{ t("ui.stock_management.page.title", "Stock") }</h2>
+}
+
+// Stock is the stock page.
+templ Stock(t view.TranslatorFunc) {
+    @layout.Base(t) {
+        @StockContents(t)
+    }
+}

@@ -1,11 +1,11 @@
 package service
 
 import (
-	. "github.com/codeluft/kuchy/pkg/domain/model"
+	. "github.com/codeluft/kuchy/domain/model"
 )
 
 var (
-	productServiceInstance *productService
+	productServiceInstance *ProductService
 )
 
 type productRepository interface {
@@ -16,18 +16,18 @@ type measurementUnitRepository interface {
 	GetMeasurementUnitByUuid(uuid string) (*MeasurementUnitModel, error)
 }
 
-type productService struct {
+type ProductService struct {
 	productRepo  productRepository
 	measUnitRepo measurementUnitRepository
 }
 
-// NewProduct creates a new productService instance.
-func NewProduct(productRepo productRepository, measUnitRepo measurementUnitRepository) *productService {
-	return &productService{productRepo: productRepo, measUnitRepo: measUnitRepo}
+// NewProduct creates a new ProductService instance.
+func NewProduct(productRepo productRepository, measUnitRepo measurementUnitRepository) *ProductService {
+	return &ProductService{productRepo: productRepo, measUnitRepo: measUnitRepo}
 }
 
-// SingletonProduct creates a new productService instance if it doesn't exist yet.
-func SingletonProduct(productRepo productRepository, measUnitRepo measurementUnitRepository) *productService {
+// SingletonProduct creates a new ProductService instance if it doesn't exist yet.
+func SingletonProduct(productRepo productRepository, measUnitRepo measurementUnitRepository) *ProductService {
 	if productServiceInstance == nil {
 		productServiceInstance = NewProduct(productRepo, measUnitRepo)
 	}
@@ -35,7 +35,7 @@ func SingletonProduct(productRepo productRepository, measUnitRepo measurementUni
 }
 
 // CreateProduct creates a new product in the database.
-func (s *productService) CreateProduct(uuid, name, barcode, measUnitUuid string, measValue float64) (*ProductModel, error) {
+func (s *ProductService) CreateProduct(uuid, name, barcode, measUnitUuid string, measValue float64) (*ProductModel, error) {
 	measUnit, err := s.measUnitRepo.GetMeasurementUnitByUuid(measUnitUuid)
 	if err != nil {
 		return nil, err

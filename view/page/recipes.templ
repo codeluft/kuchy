@@ -1,0 +1,20 @@
+package page
+
+import (
+    "github.com/codeluft/kuchy/view/layout"
+    "github.com/codeluft/kuchy/view"
+)
+
+// RecipesContents is the contents of the recipes page.
+templ RecipesContents(t view.TranslatorFunc) {
+    <div>
+        <h2>{ t("ui.recipe.page.title", "Recipes") }</h2>
+    </div>
+}
+
+// Recipes is the recipes page.
+templ Recipes(t view.TranslatorFunc) {
+    @layout.Base(t) {
+        @RecipesContents(t)
+    }
+}

@@ -1,7 +1,7 @@
-package components
+package component
 
 import (
-    "github.com/codeluft/kuchy/translations"
+    "github.com/codeluft/kuchy/view"
 )
 
 type navbarLink struct {
@@ -22,7 +22,7 @@ var links = []navbarLink{
 }
 
 // Navigation renders the navigation bar
-templ Navigation(t translations.TranslatorFunc) {
+templ Navigation(t view.TranslatorFunc) {
     <nav class="navbar navbar-expand-lg">
         <ul class="nav nav-pills">
         for _, link := range links {

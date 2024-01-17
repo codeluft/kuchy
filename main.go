@@ -4,8 +4,7 @@ import (
 	"context"
 	"embed"
 	"fmt"
-	"github.com/codeluft/kuchy/pkg/app"
-	"github.com/codeluft/kuchy/translations"
+	"github.com/codeluft/kuchy/app"
 	"log"
 	"net/http"
 )
@@ -21,15 +20,12 @@ const (
 )
 
 func main() {
-	var ctx = context.TODO()
-	var t, err = translations.NewTranslator(transFS)
-	var session = app.NewSession()
-
+	t, err := app.NewTranslator(transFS)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var router = app.NewRouter(assets, ctx, t, session)
+	var router = app.NewRouter(assets, context.TODO(), t, app.NewSessionManager())
 	var addr = fmt.Sprintf(":%d", ServerPort)
 
 	log.Printf("Running http server at %s", addr)

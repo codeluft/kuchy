@@ -1,4 +1,4 @@
-package translations
+package app
 
 import (
 	"embed"
@@ -25,7 +25,7 @@ type translator struct {
 // TranslatorFunc is a function that translates a key to a string.
 type TranslatorFunc func(string, string) string
 
-// NewTranslator returns a new translator.
+// NewTranslator returns a new Translator.
 func NewTranslator(dir embed.FS) (*translator, error) {
 	var t = &translator{
 		dict: make(map[string]map[string]string),

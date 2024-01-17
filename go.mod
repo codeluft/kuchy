@@ -8,3 +8,5 @@ require (
 	github.com/lqs/sqlingo v0.12.1
 	gopkg.in/yaml.v2 v2.4.0
 )
+
+require github.com/google/uuid v1.5.0

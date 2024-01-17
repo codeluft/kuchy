@@ -1,22 +1,22 @@
 package repository
 
 import (
-	. "github.com/codeluft/kuchy/pkg/domain/model"
+	. "github.com/codeluft/kuchy/domain/model"
 	"github.com/lqs/sqlingo"
 	"time"
 )
 
-type productRepository struct {
+type ProductRepository struct {
 	db sqlingo.Database
 }
 
-// NewProduct creates a new productRepository instance.
-func NewProduct(db sqlingo.Database) *productRepository {
-	return &productRepository{db}
+// NewProduct creates a new ProductRepository instance.
+func NewProduct(db sqlingo.Database) *ProductRepository {
+	return &ProductRepository{db}
 }
 
 // CreateProduct creates a new product in the database.
-func (r *productRepository) CreateProduct(uuid, name, barcode string, measurementValue float64, measUnit *MeasurementUnitModel) (*ProductModel, error) {
+func (r *ProductRepository) CreateProduct(uuid, name, barcode string, measurementValue float64, measUnit *MeasurementUnitModel) (*ProductModel, error) {
 	_, err := r.db.InsertInto(Product).
 		Fields(
 			Product.Uuid,

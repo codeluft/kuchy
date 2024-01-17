@@ -1,0 +1,18 @@
+package page
+
+import (
+    "github.com/codeluft/kuchy/view/layout"
+    "github.com/codeluft/kuchy/view"
+)
+
+// HomeContents is the home page contents.
+templ HomeContents(t view.TranslatorFunc) {
+    <h2>{ t("ui.home.page.title", "Home") }</h2>
+}
+
+// Home is the home page.
+templ Home(t view.TranslatorFunc) {
+    @layout.Base(t) {
+        @HomeContents(t)
+    }
+}
