@@ -18,8 +18,7 @@ tools:
 	go install github.com/pressly/goose/v3/cmd/goose@latest
 	go install github.com/lqs/sqlingo/sqlingo-gen-postgres@latest
 	wget -O /dev/stdout ${GOLANGCI_LINT_URL}/${GOLANGCI_LINT_VERSION}/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
-	npm install -D tailwindcss@latest
-	npm install flowbite
+	npm install
 
 build-frontend:
 	mkdir -p ./static/css ./static/js
@@ -28,7 +27,7 @@ build-frontend:
 	wget ${HTMX_URL}@${HTMX_VERSION}/dist/ext/json-enc.js -O ./static/js/json-enc.js -o /dev/null
 
 check:
-	golangci-lint run
+	./bin/golangci-lint run
 	go test -v -race ./...
 
 templ:
