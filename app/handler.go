@@ -1,8 +1,11 @@
-package handler
+package app
 
 import (
 	"context"
 	"encoding/json"
+	"github.com/a-h/templ"
+	"github.com/codeluft/kuchy/view"
+	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
 )
@@ -10,12 +13,12 @@ import (
 type Handler struct {
 	ctx context.Context
 	log *log.Logger
-	t   func(string, string) string
+	tFn view.TranslatorFunc
 }
 
-// New returns a new Handler.
-func New(ctx context.Context, l *log.Logger, t func(string, string) string) *Handler {
-	return &Handler{ctx: ctx, log: l, t: t}
+// NewHandler returns a new Handler.
+func NewHandler(ctx context.Context, log *log.Logger, tFn view.TranslatorFunc) *Handler {
+	return &Handler{ctx, log, tFn}
 }
 
 // JSONEncode encodes the given value as JSON and writes it to the response.
@@ -35,4 +38,18 @@ func (h *Handler) JSONError(w http.ResponseWriter, err error, status int) {
 	w.WriteHeader(status)
 	h.log.Println(err)
 	_ = h.JSONEncode(w, map[string]string{"error": err.Error()})
+}
+
+// TemplateHandler returns a httprouter.Handle that renders the given template.
+func (h *Handler) TemplateHandler(template templ.Component) httprouter.Handle {
+	return func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+		if err := template.Render(h.ctx, w); err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
+// TranslatorFunc returns the TranslatorFunc for the Handler.
+func (h *Handler) TranslatorFunc() view.TranslatorFunc {
+	return h.tFn
 }

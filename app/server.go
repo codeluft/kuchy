@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"errors"
-	"github.com/codeluft/kuchy/handler"
 	"github.com/codeluft/kuchy/view/layout"
 	"github.com/julienschmidt/httprouter"
 	"io/fs"
@@ -16,24 +15,6 @@ var (
 	ErrNilSessionManager = errors.New("session manager is nil")
 	ErrNilTranslator     = errors.New("translator is nil")
 )
-
-type translatorFunc func(string, string) string
-
-func registerHandlers(r *httprouter.Router, ctx context.Context, l *log.Logger, t translatorFunc) {
-	var h = handler.New(ctx, l, t)
-
-	r.GET("/", h.Home)
-	r.GET("/pages/home", h.HomeContents)
-
-	r.GET("/stock", h.Stock)
-	r.GET("/pages/stock", h.StockContents)
-
-	r.GET("/recipes", h.Recipes)
-	r.GET("/pages/recipes", h.RecipesContents)
-
-	r.GET("/products", h.Products)
-	r.GET("/pages/products", h.ProductsContents)
-}
 
 // FileSystem defines a contract for serving static files.
 type FileSystem interface {
@@ -67,7 +48,7 @@ func (sh *ServerHandler) Register() *ServerHandler {
 			log.Fatal(err)
 		}
 	})
-	registerHandlers(sh.router, sh.ctx, sh.log, sh.translator.Translate)
+	routes(sh.router, NewHandler(sh.ctx, sh.log, sh.translator.Translate))
 	return sh
 }
 

@@ -59,16 +59,20 @@ func NewTranslator(dir embed.FS) (*Translator, error) {
 }
 
 // Translate translates a key to the current language.
-func (t *Translator) Translate(key, placeholder string) string {
-	if _, ok := t.dict[t.lang]; !ok {
-		return placeholder
+func (t *Translator) Translate(key string) string {
+	var dict, ok = t.dict[t.lang]
+	if !ok {
+		dict, ok = t.dict[DefaultLanguage]
+		if !ok {
+			return key
+		}
 	}
 
-	if _, ok := t.dict[t.lang][key]; !ok {
-		return placeholder
+	if _, ok := dict[key]; !ok {
+		return key
 	}
 
-	return t.dict[t.lang][key]
+	return dict[key]
 }
 
 // SetLanguage sets the current language.

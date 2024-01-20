@@ -16,7 +16,6 @@ tools:
 	go install github.com/a-h/templ/cmd/templ@latest
 	go install github.com/cosmtrek/air@latest
 	go install github.com/pressly/goose/v3/cmd/goose@latest
-	go install github.com/lqs/sqlingo/sqlingo-gen-postgres@latest
 	wget -O /dev/stdout ${GOLANGCI_LINT_URL}/${GOLANGCI_LINT_VERSION}/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
 	npm install
 
@@ -49,9 +48,6 @@ migrate-up:
 
 migrate-down:
 	goose -dir migrations postgres "host=${DATABASE_HOST} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" down
-
-models:
-	sqlingo-gen-postgres "host=${DATABASE_HOST} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" > domain/model/model.go
 
 run:
 	air

@@ -1,3 +1,3 @@
 package view
 
-type TranslatorFunc func(string, string) string
+type TranslatorFunc func(string) string

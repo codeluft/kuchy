@@ -7,12 +7,28 @@ import (
 
 // ProductContents is the contents of the stock page.
 templ ProductsContents(t view.TranslatorFunc) {
-    <h2>{ t("ui.product.page.title", "Stock") }</h2>
+    <h2>{ t("ui.product.page.title") }</h2>
 }
 
 // Product is the stock page.
 templ Products(t view.TranslatorFunc) {
     @layout.Base(t) {
         @ProductsContents(t)
+    }
+}
+
+templ ProductsAddContents(t view.TranslatorFunc) {
+    <h2>{ t("ui.product.add.title") }</h2>
+    <form method="POST">
+        <label for="name">
+            { t("ui.product.add.name") }
+            <input type="text" name="name" />
+        </label>
+    </form>
+}
+
+templ ProductsAdd(t view.TranslatorFunc) {
+    @layout.Base(t) {
+        @ProductsAddContents(t)
     }
 }
