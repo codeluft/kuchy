@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"github.com/codeluft/kuchy/app/handler"
 	"github.com/codeluft/kuchy/view/layout"
 	"github.com/julienschmidt/httprouter"
 	"io/fs"
@@ -48,7 +49,7 @@ func (sh *ServerHandler) Register() *ServerHandler {
 			log.Fatal(err)
 		}
 	})
-	routes(sh.router, NewHandler(sh.ctx, sh.log, sh.translator.Translate))
+	routes(sh.router, handler.New(sh.ctx, sh.log, sh.translator.Translate))
 	return sh
 }
 

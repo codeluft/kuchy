@@ -1,4 +1,4 @@
-package app
+package handler
 
 import (
 	"context"
@@ -16,8 +16,8 @@ type Handler struct {
 	tFn view.TranslatorFunc
 }
 
-// NewHandler returns a new Handler.
-func NewHandler(ctx context.Context, log *log.Logger, tFn view.TranslatorFunc) *Handler {
+// New returns a new Handler.
+func New(ctx context.Context, log *log.Logger, tFn view.TranslatorFunc) *Handler {
 	return &Handler{ctx, log, tFn}
 }
 

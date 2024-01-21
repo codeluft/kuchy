@@ -1,22 +1,45 @@
 package page
 
 import (
-    "github.com/codeluft/kuchy/view/layout"
+    "github.com/codeluft/kuchy/domain/model"
     "github.com/codeluft/kuchy/view"
+    "github.com/codeluft/kuchy/view/layout"
 )
 
 // ProductContents is the contents of the stock page.
-templ ProductsContents(t view.TranslatorFunc) {
+templ ProductsContents(t view.TranslatorFunc, products []model.Product) {
     <h2>{ t("ui.product.page.title") }</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>{ t("ui.product.page.name") }</th>
+            </tr>
+        </thead>
+        <tbody>
+        if len(products) == 0 {
+            <tr>
+                <td colspan="1">{ t("ui.product.page.no_products") }</td>
+            </tr>
+        } else {
+            for _, product := range products {
+            <tr>
+                <td>{ product.Name }</td>
+                <td>{ product.Barcode }</td>
+            </tr>
+            }
+        }
+        </tbody>
+    </table>
 }
 
 // Product is the stock page.
-templ Products(t view.TranslatorFunc) {
+templ Products(t view.TranslatorFunc, products []model.Product) {
     @layout.Base(t) {
-        @ProductsContents(t)
+        @ProductsContents(t, products)
     }
 }
 
+// ProductAddContents is the contents of the add product page.
 templ ProductsAddContents(t view.TranslatorFunc) {
     <h2>{ t("ui.product.add.title") }</h2>
     <form method="POST">
@@ -27,6 +50,7 @@ templ ProductsAddContents(t view.TranslatorFunc) {
     </form>
 }
 
+// ProductAdd is the add product page.
 templ ProductsAdd(t view.TranslatorFunc) {
     @layout.Base(t) {
         @ProductsAddContents(t)
