@@ -31,9 +31,10 @@ templ Navigation(t view.TranslatorFunc) {
                     <li class="nav-item">
                         <a  class="nav-link"
                             role="button"
-                            href={templ.SafeURL(sublink.url)}
-                            hx-get={sublink.pageUrl}
+                            href={ templ.SafeURL(sublink.url) }
+                            hx-get={ sublink.pageUrl }
                             hx-target="#contents"
+                            hx-push-url="true"
                             hx-trigger="click">{ t(sublink.translationKey) }</a>
                     </li>
                 }
@@ -43,9 +44,10 @@ templ Navigation(t view.TranslatorFunc) {
             <li class="nav-item">
                 <a  class="nav-link"
                     role="button"
-                    href={templ.SafeURL(link.url)}
-                    hx-get={link.pageUrl}
+                    href={ templ.SafeURL(link.url) }
+                    hx-get={ link.pageUrl }
                     hx-target="#contents"
+                    hx-push-url="true"
                     hx-trigger="click">{ t(link.translationKey) }</a>
             </li>
             }

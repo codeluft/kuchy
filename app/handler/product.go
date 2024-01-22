@@ -11,7 +11,6 @@ import (
 // ProductsListing renders the products listing page.
 func (h *Handler) ProductsListing(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	var products []model.Product
-
 	if err := page.Products(h.tFn, products).Render(h.ctx, w); err != nil {
 		log.Fatal(err)
 	}
@@ -20,7 +19,7 @@ func (h *Handler) ProductsListing(w http.ResponseWriter, _ *http.Request, _ http
 // ProductsListingContents renders the products listing page.
 func (h *Handler) ProductsListingContents(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	var products []model.Product
-
+	w.Header().Add("HX-Push-Url", "/products")
 	if err := page.ProductsContents(h.tFn, products).Render(h.ctx, w); err != nil {
 		log.Fatal(err)
 	}
