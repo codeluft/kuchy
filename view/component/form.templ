@@ -1,0 +1,43 @@
+package component
+
+// Input types
+const (
+    InputTypeText = "text"
+    InputTypePassword = "password"
+    InputTypeEmail = "email"
+    InputTypeNumber = "number"
+    InputTypeTel = "tel"
+    InputTypeUrl = "url"
+    InputTypeSearch = "search"
+    InputTypeDate = "date"
+    InputTypeTime = "time"
+    InputTypeWeek = "week"
+    InputTypeMonth = "month"
+    InputTypeDatetime = "datetime"
+    InputTypeDatetimeLocal = "datetime-local"
+    InputTypeColor = "color"
+    InputTypeFile = "file"
+    InputTypeHidden = "hidden"
+    InputTypeImage = "image"
+    InputTypeRange = "range"
+    InputTypeReset = "reset"
+    InputTypeSubmit = "submit"
+    InputTypeButton = "button"
+)
+
+// InputConfig is the config for an input
+type InputConfig struct {
+    ID string
+    Name string
+    Label string
+    Value string
+    Type string
+    Placeholder string
+}
+
+// Input renders an input
+templ Input(c InputConfig) {
+    <label for={ c.ID }>{ c.Label }
+        <input id={ c.ID } name={ c.Name } value={ c.Value } type={ c.Type } placeholder={ c.Placeholder } />
+    </label>
+}

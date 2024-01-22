@@ -4,6 +4,7 @@ import (
     "github.com/codeluft/kuchy/domain/model"
     "github.com/codeluft/kuchy/view"
     "github.com/codeluft/kuchy/view/layout"
+    "github.com/codeluft/kuchy/view/component"
 )
 
 // ProductContents is the contents of the stock page.
@@ -43,10 +44,13 @@ templ Products(t view.TranslatorFunc, products []model.Product) {
 templ ProductsAddContents(t view.TranslatorFunc) {
     <h2>{ t("ui.product.add.title") }</h2>
     <form method="POST">
-        <label for="name">
-            { t("ui.product.add.name") }
-            <input type="text" name="name" />
-        </label>
+        @component.Input(component.InputConfig{
+            ID: "product_name",
+            Label: t("ui.product.add.name"),
+            Name: "product.name",
+            Type: "text",
+            Placeholder: "product name",
+        })
     </form>
 }
 
