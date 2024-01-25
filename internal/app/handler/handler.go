@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/a-h/templ"
-	"github.com/codeluft/kuchy/view"
+	"github.com/codeluft/kuchy/internal/view"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
@@ -75,7 +75,7 @@ func WithPushUrl(url string) TemplateHandlerOptsFunc {
 	}
 }
 
-// TranslatorFunc returns the TranslatorFunc for the Handler.
+// TranslatorFunc returns the Func for the Handler.
 func (h *Handler) TranslatorFunc() view.TranslatorFunc {
 	return h.tFn
 }

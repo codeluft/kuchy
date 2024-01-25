@@ -1,8 +1,8 @@
 package app
 
 import (
-	. "github.com/codeluft/kuchy/app/handler"
-	"github.com/codeluft/kuchy/view/page"
+	. "github.com/codeluft/kuchy/internal/app/handler"
+	"github.com/codeluft/kuchy/internal/view/page"
 	"github.com/julienschmidt/httprouter"
 )
 

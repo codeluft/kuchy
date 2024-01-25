@@ -1,35 +1,47 @@
-package app
+package translator
 
 import (
 	"embed"
 	"errors"
 	"gopkg.in/yaml.v2"
+	"sync"
 )
 
 var (
+	// ErrCannotOpenTranslationDirectory is an error that occurs when the translation directory cannot be opened.
 	ErrCannotOpenTranslationDirectory = errors.New("cannot open translation directory")
-	ErrCannotReadTranslationFile      = errors.New("cannot read translation file")
+
+	// ErrCannotReadTranslationFile is an error that occurs when the translation file cannot be read.
+	ErrCannotReadTranslationFile = errors.New("cannot read translation file")
+
+	// ErrCannotUnmarshalTranslationFile is an error that occurs when the translation file cannot be unmarshalled.
 	ErrCannotUnmarshalTranslationFile = errors.New("cannot unmarshal translation file")
-	ErrLanguageNotFound               = errors.New("language not found")
+
+	// ErrLanguageNotFound is an error that occurs when the language is not found.
+	ErrLanguageNotFound = errors.New("language not found")
 )
 
 const (
+	// DefaultLanguage is the default language.
 	DefaultLanguage = "en"
 )
 
-type Translator struct {
-	dict map[string]map[string]string
-	lang string
+// Loader loads translations and expose translation functions.
+type Loader struct {
+	dict  map[string]map[string]string
+	lang  string
+	mutex *sync.RWMutex
 }
 
-// TranslatorFunc is a function that translates a key to a string.
-type TranslatorFunc func(string, string) string
+// Func is a function that translates a key to a string.
+type Func func(string, string) string
 
-// NewTranslator returns a new Translator.
-func NewTranslator(dir embed.FS) (*Translator, error) {
-	var t = &Translator{
-		dict: make(map[string]map[string]string),
-		lang: DefaultLanguage,
+// New returns a new TranslatorImpl.
+func New(dir embed.FS) (*Loader, error) {
+	var t = &Loader{
+		dict:  make(map[string]map[string]string),
+		lang:  DefaultLanguage,
+		mutex: new(sync.RWMutex),
 	}
 
 	dirEntry, err := dir.ReadDir("translations")
@@ -59,7 +71,10 @@ func NewTranslator(dir embed.FS) (*Translator, error) {
 }
 
 // Translate translates a key to the current language.
-func (t *Translator) Translate(key string) string {
+func (t *Loader) Translate(key string) string {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
+
 	var dict, ok = t.dict[t.lang]
 	if !ok {
 		dict, ok = t.dict[DefaultLanguage]
@@ -76,7 +91,10 @@ func (t *Translator) Translate(key string) string {
 }
 
 // SetLanguage sets the current language.
-func (t *Translator) SetLanguage(lang string) error {
+func (t *Loader) SetLanguage(lang string) error {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
+
 	if _, ok := t.dict[lang]; !ok {
 		return ErrLanguageNotFound
 	}
@@ -86,11 +104,14 @@ func (t *Translator) SetLanguage(lang string) error {
 }
 
 // GetLanguage returns the current language.
-func (t *Translator) GetLanguage() string {
+func (t *Loader) GetLanguage() string {
 	return t.lang
 }
 
 // GetDict returns the current dictionary.
-func (t *Translator) GetDict() map[string]string {
+func (t *Loader) GetDict() map[string]string {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
+
 	return t.dict[t.lang]
 }

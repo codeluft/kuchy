@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/codeluft/kuchy/domain/model"
-	"github.com/codeluft/kuchy/view/page"
+	"github.com/codeluft/kuchy/internal/domain/model"
+	"github.com/codeluft/kuchy/internal/view/page"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"

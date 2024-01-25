@@ -5,7 +5,9 @@ import (
 	"embed"
 	"flag"
 	"fmt"
-	"github.com/codeluft/kuchy/app"
+	"github.com/codeluft/kuchy/internal/app"
+	"github.com/codeluft/kuchy/internal/app/session"
+	"github.com/codeluft/kuchy/internal/app/translator"
 	"log"
 	"net/http"
 	"time"
@@ -30,7 +32,7 @@ func main() {
 	flag.IntVar(&port, "port", ServerPort, "The port to listen on.")
 	flag.Parse()
 
-	translator, err := app.NewTranslator(transFS)
+	translator, err := translator.New(transFS)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,7 +41,7 @@ func main() {
 		WithLogger(log.Default()).
 		WithContext(context.TODO()).
 		WithAssets(assets).
-		WithSessionManager(app.NewSessionManager()).
+		WithSessionManager(session.NewManager()).
 		WithTranslator(translator).
 		Register()
 

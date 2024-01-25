@@ -3,8 +3,10 @@ package app
 import (
 	"context"
 	"errors"
-	"github.com/codeluft/kuchy/app/handler"
-	"github.com/codeluft/kuchy/view/layout"
+	"github.com/codeluft/kuchy/internal/app/handler"
+	"github.com/codeluft/kuchy/internal/app/session"
+	"github.com/codeluft/kuchy/internal/app/translator"
+	"github.com/codeluft/kuchy/internal/view/layout"
 	"github.com/julienschmidt/httprouter"
 	"io/fs"
 	"log"
@@ -27,8 +29,8 @@ type FileSystem interface {
 type ServerHandler struct {
 	router         *httprouter.Router
 	log            *log.Logger
-	translator     *Translator
-	sessionManager *SessionManager
+	translator     *translator.Loader
+	sessionManager *session.Manager
 	ctx            context.Context
 }
 
@@ -63,12 +65,12 @@ func (sh *ServerHandler) WithContext(ctx context.Context) *ServerHandler {
 	return sh
 }
 
-func (sh *ServerHandler) WithSessionManager(sm *SessionManager) *ServerHandler {
+func (sh *ServerHandler) WithSessionManager(sm *session.Manager) *ServerHandler {
 	sh.sessionManager = sm
 	return sh
 }
 
-func (sh *ServerHandler) WithTranslator(t *Translator) *ServerHandler {
+func (sh *ServerHandler) WithTranslator(t *translator.Loader) *ServerHandler {
 	sh.requireSessionManager()
 	sh.translator = t
 	sh.router.GET("/lang/:lang", func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -95,7 +97,7 @@ func (sh *ServerHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	lang := sh.sessionManager.GetSession(w, req).Get("lang")
 	if lang == nil {
-		lang = DefaultLanguage
+		lang = translator.DefaultLanguage
 	}
 	sh.sessionManager.GetSession(w, req).Set("lang", lang)
 
