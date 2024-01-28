@@ -1,34 +1,14 @@
 package controller
 
 import (
-	c "context"
-	t "github.com/codeluft/kuchy/internal/app/translator"
-	"log"
+	"net/http"
 )
 
-var (
-	context    *c.Context
-	logger     *log.Logger
-	translator *t.Loader
-)
-
-type Controller struct {
+// Default is a wrapper around the context, logger and translator function.
+type Default struct {
 }
 
-func (c *Controller) Init(ctx *c.Context, log *log.Logger, t *t.Loader) {
-	if context == nil {
-		context = ctx
-	}
-
-	if logger == nil {
-		logger = log
-	}
-
-	if translator == nil {
-		translator = t
-	}
-}
-
-func (c *Controller) Context() *c.Context {
-	return context
+// PushUrl sets the HX-Push-Url header.
+func (d *Default) PushUrl(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("HX-Push-Url", req.URL.Path)
 }

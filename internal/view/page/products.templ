@@ -2,13 +2,13 @@ package page
 
 import (
     "github.com/codeluft/kuchy/internal/domain/model"
-    "github.com/codeluft/kuchy/internal/view"
+    "github.com/codeluft/kuchy/internal/app/translator"
     "github.com/codeluft/kuchy/internal/view/layout"
     "github.com/codeluft/kuchy/internal/view/component"
 )
 
 // ProductContents is the contents of the stock page.
-templ ProductsContents(t view.TranslatorFunc, products []model.Product) {
+templ ProductsContents(t translator.Func, products []model.Product) {
     <h2>{ t("ui.product.page.title") }</h2>
     <table>
         <thead>
@@ -34,14 +34,14 @@ templ ProductsContents(t view.TranslatorFunc, products []model.Product) {
 }
 
 // Product is the stock page.
-templ Products(t view.TranslatorFunc, products []model.Product) {
+templ Products(t translator.Func, products []model.Product) {
     @layout.Base(t) {
         @ProductsContents(t, products)
     }
 }
 
 // ProductAddContents is the contents of the add product page.
-templ ProductsAddContents(t view.TranslatorFunc) {
+templ ProductsAddContents(t translator.Func) {
     <h2>{ t("ui.product.add.title") }</h2>
     <form method="POST">
         @component.Input(component.InputConfig{
@@ -55,7 +55,7 @@ templ ProductsAddContents(t view.TranslatorFunc) {
 }
 
 // ProductAdd is the add product page.
-templ ProductsAdd(t view.TranslatorFunc) {
+templ ProductsAdd(t translator.Func) {
     @layout.Base(t) {
         @ProductsAddContents(t)
     }

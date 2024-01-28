@@ -1,38 +1,40 @@
 package component
 
 import (
-    "github.com/codeluft/kuchy/internal/view"
+    "github.com/codeluft/kuchy/internal/app/translator"
 )
 
 type navbarLink struct {
     translationKey string
     url string
-    pageUrl string
     sublinks []navbarLink
 }
 
 var links = []navbarLink{
-    {"ui.home.navbar.label", "/", "/pages/home", nil},
-    {"ui.stock.navbar.label", "/stock", "/pages/stock", nil},
-    {"ui.product.navbar.label", "/products", "/pages/products", nil},
-    {"ui.recipe.navbar.label", "/recipes", "/pages/recipes", nil},
+    {"ui.home.navbar.label", "/", nil},
+    {"ui.stock.navbar.label", "/stock", nil},
+    {"ui.product.navbar.label", "/products", nil},
+    {"ui.recipe.navbar.label", "/recipes", nil},
 }
 
 // Navigation renders the navigation bar
-templ Navigation(t view.TranslatorFunc) {
+templ Navigation(t translator.Func) {
     <nav class="navbar navbar-expand-lg">
         <ul class="nav nav-pills">
         for _, link := range links {
             if len(link.sublinks) > 0 {
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">{ t(link.translationKey) }</a>
+                <a  class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                    aria-expanded="false">{ t(link.translationKey) }</a>
                 <ul class="dropdown-menu">
                 for _, sublink := range link.sublinks {
                     <li class="nav-item">
                         <a  class="nav-link"
                             role="button"
                             href={ templ.SafeURL(sublink.url) }
-                            hx-get={ sublink.pageUrl }
+                            hx-get={ contents(sublink.url) }
                             hx-target="#contents"
                             hx-push-url="true"
                             hx-trigger="click">{ t(sublink.translationKey) }</a>
@@ -45,7 +47,7 @@ templ Navigation(t view.TranslatorFunc) {
                 <a  class="nav-link"
                     role="button"
                     href={ templ.SafeURL(link.url) }
-                    hx-get={ link.pageUrl }
+                    hx-get={ contents(link.url) }
                     hx-target="#contents"
                     hx-push-url="true"
                     hx-trigger="click">{ t(link.translationKey) }</a>
@@ -54,4 +56,8 @@ templ Navigation(t view.TranslatorFunc) {
         }
         </ul>
     </nav>
+}
+
+func contents(url string) string {
+    return url + "?contents=true"
 }

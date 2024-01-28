@@ -1,13 +1,11 @@
 package main
 
 import (
-	"context"
 	"embed"
 	"flag"
 	"fmt"
 	"github.com/codeluft/kuchy/internal/app"
-	"github.com/codeluft/kuchy/internal/app/session"
-	"github.com/codeluft/kuchy/internal/app/translator"
+	"github.com/codeluft/kuchy/internal/app/router"
 	"log"
 	"net/http"
 	"time"
@@ -17,7 +15,7 @@ import (
 var assets embed.FS
 
 //go:embed translations/*.yaml
-var transFS embed.FS
+var translationsFS embed.FS
 
 const (
 	ServerHost = "localhost"
@@ -32,28 +30,21 @@ func main() {
 	flag.IntVar(&port, "port", ServerPort, "The port to listen on.")
 	flag.Parse()
 
-	translator, err := translator.New(transFS)
-	if err != nil {
+	var addr = fmt.Sprintf("%s:%d", host, port)
+	var container = app.NewContainer(translationsFS, assets)
+
+	if handler, err := router.NewHandler(container); err == nil {
+		var server = http.Server{
+			Addr:         addr,
+			Handler:      handler,
+			IdleTimeout:  5 * time.Second,
+			ReadTimeout:  1 * time.Second,
+			WriteTimeout: 2 * time.Second,
+		}
+
+		log.Printf("Running http server at http://%s", addr)
+		log.Fatal(server.ListenAndServe())
+	} else {
 		log.Fatal(err)
 	}
-
-	var serverHandler = app.NewServerHandler().
-		WithLogger(log.Default()).
-		WithContext(context.TODO()).
-		WithAssets(assets).
-		WithSessionManager(session.NewManager()).
-		WithTranslator(translator).
-		Register()
-
-	var addr = fmt.Sprintf("%s:%d", host, port)
-	var server = http.Server{
-		Addr:         addr,
-		Handler:      serverHandler,
-		IdleTimeout:  5 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 2 * time.Second,
-	}
-
-	log.Printf("Running http server at http://%s", addr)
-	log.Fatal(server.ListenAndServe())
 }

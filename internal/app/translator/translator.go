@@ -34,10 +34,10 @@ type Loader struct {
 }
 
 // Func is a function that translates a key to a string.
-type Func func(string, string) string
+type Func func(string) string
 
-// New returns a new TranslatorImpl.
-func New(dir embed.FS) (*Loader, error) {
+// NewLoader returns a new TranslatorImpl.
+func NewLoader(dir embed.FS) (*Loader, error) {
 	var t = &Loader{
 		dict:  make(map[string]map[string]string),
 		lang:  DefaultLanguage,

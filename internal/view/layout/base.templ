@@ -2,11 +2,11 @@ package layout
 
 import (
     "github.com/codeluft/kuchy/internal/view/component"
-    "github.com/codeluft/kuchy/internal/view"
+    "github.com/codeluft/kuchy/internal/app/translator"
 )
 
 // Base is the base template for all pages
-templ Base(t view.TranslatorFunc) {
+templ Base(t translator.Func) {
     <!DOCTYPE html>
     <html>
         <head>
