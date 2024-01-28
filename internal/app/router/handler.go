@@ -45,6 +45,12 @@ func NewHandler(c *app.Container) (*Handler, error) {
 			}
 		})
 
+		// Setup language switch handler.
+		handler.router.GET("/lang/:lang", func(resp http.ResponseWriter, req *http.Request, params httprouter.Params) {
+			c.Session.Manager.GetSession(resp, req).Set("lang", params.ByName("lang"))
+			http.Redirect(resp, req, "/", http.StatusFound)
+		})
+
 		// Load routes.
 		Routes(handler.router, c)
 
