@@ -61,19 +61,21 @@ func NewHandler(c *app.Container) (*Handler, error) {
 }
 
 // ServeHTTP implements http.Handler with logging.
-func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 	if c := h.container; c != nil {
-		lang := c.Session.Manager.GetSession(resp, req).Get("lang")
+		lang := c.Session.Manager.GetSession(w, r).Get("lang")
 		if lang == nil {
 			lang = translator.DefaultLanguage
 		}
-		c.Session.Manager.GetSession(resp, req).Set("lang", lang)
+		c.Session.Manager.GetSession(w, r).Set("lang", lang)
 
 		if err := c.Translator.Loader.SetLanguage(lang.(string)); err != nil {
 			c.Log.Println(err)
 		}
 
-		c.Log.Printf("%s %s", req.Method, req.URL.Path)
-		h.router.ServeHTTP(resp, req)
+		c.Log.Printf("%s %s", r.Method, r.URL.Path)
+		h.router.ServeHTTP(w, r)
 	}
 }

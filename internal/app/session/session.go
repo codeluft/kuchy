@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	SessionKeyName = "APPLICATION_SESSION_KEY"
+	KeyName = "APPLICATION_SESSION_KEY"
 )
 
 // Manager is a session manager.
@@ -25,31 +25,13 @@ func NewManager() *Manager {
 	return &Manager{sessions: map[string]Dictionary{}}
 }
 
-// GetSession returns the session for the given request.
-func (m *Manager) GetSession(w http.ResponseWriter, r *http.Request) Dictionary {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-
-	var key string
-
-	if cookie, err := r.Cookie(SessionKeyName); err == nil {
-		key = cookie.Value
-	}
-
-	if session, ok := m.sessions[key]; ok {
-		return session
-	}
-
-	return m.createSession(w, r)
-}
-
 func (m *Manager) createSession(w http.ResponseWriter, r *http.Request) Dictionary {
 	var key = uuid.NewString()
 
-	cookie, err := r.Cookie(SessionKeyName)
+	cookie, err := r.Cookie(KeyName)
 	if err != nil {
 		http.SetCookie(w, &http.Cookie{
-			Name:     SessionKeyName,
+			Name:     KeyName,
 			Value:    key,
 			Path:     "/",
 			HttpOnly: true,
@@ -65,6 +47,24 @@ func (m *Manager) createSession(w http.ResponseWriter, r *http.Request) Dictiona
 	}
 
 	return m.sessions[key]
+}
+
+// GetSession returns the session for the given request.
+func (m *Manager) GetSession(w http.ResponseWriter, r *http.Request) Dictionary {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	var key string
+
+	if cookie, err := r.Cookie(KeyName); err == nil {
+		key = cookie.Value
+	}
+
+	if session, ok := m.sessions[key]; ok {
+		return session
+	}
+
+	return m.createSession(w, r)
 }
 
 // Get returns the value for the given key.

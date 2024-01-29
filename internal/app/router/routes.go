@@ -7,4 +7,5 @@ import (
 
 func Routes(r *httprouter.Router, c *app.Container) {
 	r.GET("/", c.Controller.Home.Index)
+	r.GET("/products", c.Controller.Product.Index)
 }

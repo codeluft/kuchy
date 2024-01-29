@@ -4,11 +4,11 @@ import (
 	"net/http"
 )
 
-// Default is a wrapper around the context, logger and translator function.
+// Default is the default controller.
 type Default struct {
 }
 
 // PushUrl sets the HX-Push-Url header.
-func (d *Default) PushUrl(resp http.ResponseWriter, req *http.Request) {
-	resp.Header().Set("HX-Push-Url", req.URL.Path)
+func (d *Default) PushUrl(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("HX-Push-Url", r.URL.Path)
 }

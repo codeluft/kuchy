@@ -27,14 +27,14 @@ func NewHome(ctx context.Context, log *log.Logger, tfn translator.Func) *Home {
 }
 
 // Index is the handler for the home page.
-func (h *Home) Index(resp http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func (h *Home) Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var component = page.Home
-	if contents := req.URL.Query().Get("contents"); contents == "true" {
+	if contents := r.URL.Query().Get("contents"); contents == "true" {
 		component = page.HomeContents
 	}
-	h.PushUrl(resp, req)
+	h.PushUrl(w, r)
 
-	if err := component(h.tfn).Render(h.ctx, resp); err != nil {
+	if err := component(h.tfn).Render(h.ctx, w); err != nil {
 		h.log.Fatal(err)
 	}
 }
