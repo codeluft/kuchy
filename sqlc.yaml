@@ -1,0 +1,12 @@
+version: "2"
+sql:
+  - schema: "database/migrations"
+    queries: "database/queries.sql"
+    engine: "postgresql"
+    gen:
+      go:
+        package: "model"
+        out: "internal/domain/model"
+        sql_package: "pgx/v5"
+    rules:
+      - sqlc/db-prepare
