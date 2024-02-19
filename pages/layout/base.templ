@@ -1,0 +1,29 @@
+package layout
+
+templ (layout *Layout) Base() {
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Kuchy</title>
+        </head>
+        <body>
+            <main class="container">
+                <header>
+                    <h1>Kuchy</h1>
+                </header>
+
+                <div>
+                    @layout.Navbar()
+                    <section>{ children... }</section>
+                </div>
+
+                <footer>
+                </footer>
+            </main>
+
+            @layout.InlineScript("static/js/main.js")
+        </body>
+    </html>
+}

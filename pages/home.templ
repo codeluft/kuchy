@@ -1,0 +1,11 @@
+package pages
+
+templ (p *Pages) HomeIndexContents() {
+    <h1>{ p.Translate("pages.home.index.title") }</h1>
+}
+
+templ (p *Pages) HomeIndex() {
+    @p.layout.Base() {
+        @p.HomeIndexContents()
+    }
+}
