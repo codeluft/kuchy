@@ -32,12 +32,26 @@ func (l *Layout) Translate(v string) string {
 func (l *Layout) InlineScript(path string) templ.Component {
 	contents, err := l.staticFs.ReadFile(path)
 	if err != nil {
-		return templ.Raw(fmt.Sprintf(
-			`<script type="text/javascript">console.error("Error loading script %s: %w")</script>`,
-			path,
-			err,
-		))
+		return l.script([]byte(fmt.Sprintf(`console.error("Error loading script %s: %s")`, path, err)))
 	}
 
-	return templ.Raw(fmt.Sprintf(`<script type="text/javascript">%s</script>`, string(contents)))
+	return l.script(contents)
+}
+
+// InlineStyle returns a style tag with the contents of the file at the given path.
+func (l *Layout) InlineStyle(path string) templ.Component {
+	contents, err := l.staticFs.ReadFile(path)
+	if err != nil {
+		return l.style([]byte(fmt.Sprintf(`/* Error loading style %s: %s */`, path, err)))
+	}
+
+	return l.style(contents)
+}
+
+func (l *Layout) script(contents []byte) templ.Component {
+	return templ.Raw(fmt.Sprintf(`<script type="text/javascript" async>%s</script>`, string(contents)))
+}
+
+func (l *Layout) style(contents []byte) templ.Component {
+	return templ.Raw(fmt.Sprintf(`<style type="text/css">%s</style>`, string(contents)))
 }

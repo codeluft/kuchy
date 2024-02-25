@@ -7,23 +7,22 @@ templ (layout *Layout) Base() {
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>Kuchy</title>
+            @layout.InlineStyle("static/css/style.css")
         </head>
         <body>
             <main class="container">
                 <header>
                     <h1>Kuchy</h1>
                 </header>
-
                 <div>
                     @layout.Navbar()
                     <section>{ children... }</section>
                 </div>
-
                 <footer>
                 </footer>
             </main>
 
-            @layout.InlineScript("static/js/main.js")
+            @layout.InlineScript("static/js/htmx.min.js")
         </body>
     </html>
 }

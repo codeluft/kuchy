@@ -115,7 +115,6 @@ func registerRequiredDependencies(ctx context.Context, c dic.Container, staticFs
 	})
 }
 
-// temporary translator (mock)
 type translator string
 
 func (t translator) Translate(v string) string {
